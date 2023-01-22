@@ -12,14 +12,8 @@ map<string,int> wordCount;
 int main()
 {
     ifstream FILE;
-    openFile(FILE,"input.txt");
+    openFile(FILE,"rony.txt");
     processFile_wordByword(FILE);
-    //int i = 1;
-    for(auto u : wordCount)
-    {
-        cout<<u.first<<" "<<u.second<<"\n";
-    }
-
     FILE.close();
     return 0;
 }
@@ -38,7 +32,7 @@ void processFile_wordByword(ifstream &FILE)
     string line,word;
     istringstream iss;
     fstream f;
-    f.open("write.txt");
+    f.open("word.txt");
     while(!FILE.eof())
     {
         getline(FILE,line);
@@ -58,7 +52,7 @@ void processFile_wordByword(ifstream &FILE)
 
     for(auto str : wordCount)
     {
-        f<<str.first<<" "<<str.second<<"\n";
+        f<<str.first<<"\n";//<<str.second<<"\n";
     }
 
 }
