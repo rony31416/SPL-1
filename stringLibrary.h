@@ -129,6 +129,18 @@ int stringFind(string text, string pattern)
 }
 //---------------------------------------------------------------
 
+string get_substring(const string& str, int start, int end)
+{
+    string result;
+    for (int i = start; i < end; ++i)
+    {
+        result += str[i];
+    }
+    return result;
+}
+
+
+
 string replaceFirstOccurrence(string inputString, string target, string replacement)
 {
     string result = "";

@@ -19,9 +19,17 @@ string tokenizedWords[N];
 
 void print(string s[])
 {
-    for(int i = 0 ; i < countElements(s) ; i++) cout<<s[i]<<"\n";
+    fstream f;
+    f.open("write.txt");
 
+    for(int i = 0 ; i < countElements(s) ; i++){
+        cout<<s[i]<<"\n";
+        f<<s[i]<<"\n";
+
+    }
+    f<<"-------------------------------\n";
     cout<<"------------------------------\n";
+    f.close();
 }
 
 void openFile(ifstream &FILE, string fileName)
@@ -157,15 +165,54 @@ void Tokenization()
     }
 }
 
+void stopWordRemove() {
+  vector<string> result;
+  int n = countElements(words);
+  int m = countElements(stopWord);
+
+  for(int i = 0 ; i < n ; i++)
+  {
+      bool matching = true;
+      for(int j = 0 ; j < m ; j++)
+      {
+          if(words[i] == stopWord[j])
+          {
+              matching = false;
+              break;
+          }
+      }
+      if(matching)
+      {
+          result.push_back(words[i]);
+      }
+  }
+
+  for(int i = 0 ; i < N ; i++)
+  {
+      words[i].clear();
+  }
+
+  for(int i = 0 ; i < result.size() ; i++)
+  {
+      words[i] = result[i];
+  }
+
+}
+
+
 int main()
 {
     storeText();
     storeSuffix();
 
     Tokenization();
+    cout<<"Number of word : ";
+    cout<<countElements(words)<<endl;
+    stopWordRemove();
 
+    cout<<"Number of word after removing stop word : ";
+    cout<<countElements(words)<<endl;
     print(words);
-    print(tokenizedWords);
 
 
     return 0;
