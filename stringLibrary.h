@@ -159,8 +159,5 @@ string replaceFirstOccurrence(string inputString, string target, string replacem
     return result;
 }
 
-
-
-
 #endif
 
