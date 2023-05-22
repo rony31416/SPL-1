@@ -24,8 +24,8 @@ int main()
     stopWordRemove();
 
     cout<<"Number of word after removing stop word : ";
-    cout<<countElements(words)<<endl;
-    print(words);
+    cout<<countElements(tokenizedWords)<<endl;
+    print(tokenizedWords);
 
 
     return 0;
