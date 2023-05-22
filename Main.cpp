@@ -5,13 +5,16 @@
 #include <sstream>
 #include "stringLibrary.h"
 #include "processOperation.h"
+#include "printOperation.h"
+
 
 using namespace std;
 
-
-
 int main()
 {
+
+    greetings();
+
     storeText();
     storeSuffix();
 
