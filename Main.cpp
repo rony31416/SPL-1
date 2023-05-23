@@ -6,6 +6,7 @@
 #include "stringLibrary.h"
 #include "processOperation.h"
 #include "printOperation.h"
+#include "factorization_method.h"
 
 
 using namespace std;
@@ -26,6 +27,8 @@ int main()
     cout<<"Number of word after removing stop word : ";
     cout<<countElements(tokenizedWords)<<endl;
     print(tokenizedWords);
+    
+    gradientDescent();
 
 
     return 0;

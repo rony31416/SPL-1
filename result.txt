@@ -1,0 +1,6 @@
+The beginning cost was: 0.000000
+The final cost was: 0.000000
+Total number of iterations before arriving at result: 1
+The broken down matrix:
+ First matrix=
+Second matrix=

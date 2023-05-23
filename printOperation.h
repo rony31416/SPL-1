@@ -1,20 +1,5 @@
-#ifndef PRINT_LIBRARY_H
-#define PRINT_LIBRARY_H
-#include<iostream>
-#include<algorithm>
+#pragma once
 
-using namespace std;
-
-
-void greetings()
-{
-    printf("\t---------------------------------------------------------\n");
-    printf("\t|\t\t\t\t\t\t\t|\n");
-    printf("\t|\t\t\tWelcome!\t\t\t|\n");
-    printf("\t|\t\tTo Bangla Topic Modelling\t\t|\n");
-    printf("\t|\t\t\t\t\t\t\t|\n");
-    printf("\t---------------------------------------------------------\n");
-
-}
-#endif
-
+void print_two_matrix(double **m1, double **m2, int m, int k, int n);
+void print_matrix(double **V, int m, int n);
+void greetings();
