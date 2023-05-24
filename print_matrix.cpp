@@ -37,7 +37,7 @@ void print_matrix(double **V, int m, int n)
     {
         for (int j = 0; j < n; j++)
         {
-            printf("%lf\t", V[i][j]);
+            printf("%lf ", V[i][j]);
         }
         printf("\n");
     }
@@ -54,4 +54,5 @@ void greetings()
     printf("\t---------------------------------------------------------\n");
 
 }
+
 #endif

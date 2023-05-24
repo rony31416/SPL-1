@@ -7,8 +7,8 @@ using namespace std;
 
 void update_Matrix_H(double **W, double **H, double **V, int row, int k, int col)
 {
-    double *transpose_Matrix_W[N];
-    double *numerator_Matrix[N];
+    double *transpose_Matrix_W[N1];
+    double *numerator_Matrix[N1];
 
     for (int i = 0; i < k; i++)
     {
@@ -24,8 +24,8 @@ void update_Matrix_H(double **W, double **H, double **V, int row, int k, int col
 
     multiply(numerator_Matrix, transpose_Matrix_W, V, k, row, col); // WT*V
 
-    double *Temp_matrix[N]; // Temo_Matrix for storing WT*W in
-    double *denominator[N];
+    double *Temp_matrix[N1]; // Temo_Matrix for storing WT*W in
+    double *denominator[N1];
 
     for (int i = 0; i < k; i++)
         Temp_matrix[i] = (double *)malloc(k * sizeof(double));
@@ -34,13 +34,13 @@ void update_Matrix_H(double **W, double **H, double **V, int row, int k, int col
 
     multiply(Temp_matrix, transpose_Matrix_W, W, k, row, k); // WT*W
     multiply(denominator, Temp_matrix, H, k, k, col);        //(WT*W)*H
-    double *updated_H[N];                                    // the term that is to be multiplied with H
+    double *updated_H[N1];                                    // the term that is to be multiplied with H
 
     for (int i = 0; i < k; i++)
         updated_H[i] = (double *)malloc(col * sizeof(double));
     divide_each_element(updated_H, numerator_Matrix, denominator, k, col);
 
-    double *ans_H[N];
+    double *ans_H[N1];
 
     for (int i = 0; i < k; i++)
         ans_H[i] = (double *)malloc(col * sizeof(double));
@@ -56,7 +56,7 @@ void update_Matrix_H(double **W, double **H, double **V, int row, int k, int col
 }
 void update_Matrix_W(double **W, double **H, double **V, int row, int k, int col)
 {
-    double *transpose_H[N], *numerator[N];
+    double *transpose_H[N1], *numerator[N1];
 
     for (int i = 0; i < col; i++)
     {
@@ -72,14 +72,14 @@ void update_Matrix_W(double **W, double **H, double **V, int row, int k, int col
 
     multiply(numerator, V, transpose_H, row, col, k);
 
-    double *HHT[N];
+    double *HHT[N1];
 
     for (int i = 0; i < k; i++)
         HHT[i] = (double *)malloc(k * sizeof(double));
 
     multiply(HHT, H, transpose_H, k, col, k);
 
-    double *denominator_Matrix[N];
+    double *denominator_Matrix[N1];
     for (int i = 0; i < row; i++)
     {
         denominator_Matrix[i] = (double *)malloc(k * sizeof(double));
@@ -87,7 +87,7 @@ void update_Matrix_W(double **W, double **H, double **V, int row, int k, int col
 
     multiply(denominator_Matrix, W, HHT, row, k, k);
 
-    double *changes_W_Matrix[N];
+    double *changes_W_Matrix[N1];
 
     for (int i = 0; i < row; i++)
     {
@@ -96,7 +96,7 @@ void update_Matrix_W(double **W, double **H, double **V, int row, int k, int col
 
     divide_each_element(changes_W_Matrix, numerator, denominator_Matrix, row, k);
 
-    double *ans_W[N];
+    double *ans_W[N1];
 
     for (int i = 0; i < row; i++)
     {
@@ -117,7 +117,7 @@ void update_Matrix_W(double **W, double **H, double **V, int row, int k, int col
 
 void gradientDescent()
 {
-    double *matrix[N];
+    double *matrix[N1];
     int col, row, i, j, k;
 
     printf("Enter the number of row and column : ");
@@ -142,7 +142,7 @@ void gradientDescent()
     scanf("%d", &k);
 
     printf("Matrix broken and initialized using Gaussian dist: ");
-    double *W[N], *H[N];
+    double *W[N1], *H[N1];
 
     for (i = 0; i < row; i++)
     {
@@ -175,7 +175,7 @@ void gradientDescent()
 
     print_two_matrix(W, H, row, k, col);
 
-    double *V[N]; // V[N] matrix for storing W*H
+    double *V[N1]; // V[N] matrix for storing W*H
     for (i = 0; i < row; i++)
     {
         V[i] = (double *)malloc(col * sizeof(double));
@@ -240,7 +240,7 @@ void gradientDescent(double **matrix, double **A, double **B, int row, int k, in
             B[i][j] = Make_random_number();
         }
     }
-    double *V[N];
+    double *V[N1];
     for (int i = 0; i < row; i++)
         V[i] = (double *)malloc(col * sizeof(double));
 

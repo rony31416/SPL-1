@@ -17,6 +17,8 @@ string tokenizedWords[N];
 
 //string = wholetext ,int  = frequency
 map<string,int> frequency;
+//string = sentence,int = contain
+map<string,int>num_sentence_contain_word;
 
 //<serial_of_sentence,number_of_word>
 map<int,int> total_word_in_sentence;
@@ -82,6 +84,7 @@ void processFile_wordByword(ifstream &FILE)
         {
             string wrd = it->first;
             int fre = it->second;
+            num_sentence_contain_word[wrd]++;
             freq_in_sentence.push_back({cnt,{wrd,fre}});
             ++it;
         }

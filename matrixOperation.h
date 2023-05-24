@@ -6,7 +6,7 @@
 using namespace std;
 #define STANDARD_EPSILON 2.220446049250E-16
 #define EPSILON 1e-4
-const int N = 10000;
+const int N1 = 10000;
 
 double power(double a, int n)
 {
@@ -51,7 +51,7 @@ double Determinant(double **matrix, int row, int column)
 
 void Mahalanobis_distance(double **Distance, double **to, double **from, int row, int col)
 {
-    double row_mean[N];
+    double row_mean[N1];
     for (int i = 0; i < row; i++)
     {
         for (int j = 0; j < col; j++)
@@ -79,7 +79,6 @@ void Mahalanobis_distance(double **Distance, double **to, double **from, int row
         }
     }
 }
-
 
 double cost_calculate(double **initial_matrix, double **current_matrix, int row, int col)
 {
@@ -159,8 +158,6 @@ void divide_each_element(double **resultMatrix, double **matrix1, double **matri
         }
     }
 }
-
-
 
 void Delete_Matrix(double **matrix, int row)
 {
