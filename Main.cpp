@@ -26,7 +26,7 @@ int main()
 
     cout<<"Number of word after removing stop word : ";
     cout<<countElements(tokenizedWords)<<endl;
-    print(tokenizedWords);
+   // print(tokenizedWords);
     
     gradientDescent();
 

@@ -2,6 +2,7 @@
 #define PROCESS_THE_TEXT
 #include<iostream>
 #include<algorithm>
+#include "stringLibrary.h"
 
 using namespace std;
 #define N 1000
@@ -14,12 +15,22 @@ string stopWord[N];
 string tags[N];
 string tokenizedWords[N];
 
+//string = wholetext ,int  = frequency
+map<string,int> frequency;
+
+//<serial_of_sentence,number_of_word>
+map<int,int> total_word_in_sentence;
+
+//<suntenceNumber,<word,freq>>
+vector<pair<int,pair<string,int> > > freq_in_sentence;
+
 void print(string s[])
 {
     fstream f;
     f.open("write.txt");
 
-    for(int i = 0 ; i < countElements(s) ; i++){
+    for(int i = 0 ; i < countElements(s) ; i++)
+    {
         cout<<s[i]<<"\n";
         f<<s[i]<<"\n";
 
@@ -42,11 +53,16 @@ void openFile(ifstream &FILE, string fileName)
 void processFile_wordByword(ifstream &FILE)
 {
     string line,word;
+    vector<string> store;
+    map<string,int> temp;//word,freq;
+
     istringstream iss;
     int i = 0;
+    int cnt = 0,numOfcount;
     while(!FILE.eof())
     {
         getline(FILE,line);
+
         if(FILE.good())
         {
             iss.clear();
@@ -55,9 +71,28 @@ void processFile_wordByword(ifstream &FILE)
             {
                 iss>>word;
                 words[i] = word;
+                store.push_back(word);
+                frequency[word]++;
+                temp[word]++;
                 i++;
             }
+            cnt++;
         }
+        map<string, int> :: iterator it = temp.begin();
+        while (it != temp.end())
+        {
+            string wrd = it->first;
+            int fre = it->second;
+            freq_in_sentence.push_back({cnt,{wrd,fre}});
+            ++it;
+        }
+        temp.clear();
+        numOfcount = store.size();
+        if(numOfcount != 0 )
+        {
+            total_word_in_sentence[cnt] = numOfcount;
+        }
+        store.clear();
     }
 }
 
@@ -162,37 +197,38 @@ void Tokenization()
     }
 }
 
-void stopWordRemove() {
-  vector<string> result;
-  int n = countElements(tokenizedWords);
-  int m = countElements(stopWord);
+void stopWordRemove()
+{
+    vector<string> result;
+    int n = countElements(tokenizedWords);
+    int m = countElements(stopWord);
 
-  for(int i = 0 ; i < n ; i++)
-  {
-      bool matching = true;
-      for(int j = 0 ; j < m ; j++)
-      {
-          if(tokenizedWords[i] == stopWord[j])
-          {
-              matching = false;
-              break;
-          }
-      }
-      if(matching)
-      {
-          result.push_back(tokenizedWords[i]);
-      }
-  }
+    for(int i = 0 ; i < n ; i++)
+    {
+        bool matching = true;
+        for(int j = 0 ; j < m ; j++)
+        {
+            if(tokenizedWords[i] == stopWord[j])
+            {
+                matching =  false;
+                break;
+            }
+        }
+        if(matching)
+        {
+            result.push_back(tokenizedWords[i]);
+        }
+    }
 
-  for(int i = 0 ; i < N ; i++)
-  {
-      tokenizedWords[i].clear();
-  }
+    for(int i = 0 ; i < N ; i++)
+    {
+        tokenizedWords[i].clear();
+    }
 
-  for(int i = 0 ; i < result.size() ; i++)
-  {
-      tokenizedWords[i] = result[i];
-  }
+    for(int i = 0 ; i < result.size() ; i++)
+    {
+        tokenizedWords[i] = result[i];
+    }
 
 }
 

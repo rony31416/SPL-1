@@ -17,14 +17,14 @@ void update_Matrix_H(double **W, double **H, double **V, int row, int k, int col
 
     for (int i = 0; i < k; i++)
     {
-         numerator_Matrix[i] = (double *)malloc(col * sizeof(double));
+        numerator_Matrix[i] = (double *)malloc(col * sizeof(double));
     }
 
-    transpose(W, transpose_Matrix_W, row, k); //calculating transpose of W
+    transpose(W, transpose_Matrix_W, row, k); // calculating transpose of W
 
     multiply(numerator_Matrix, transpose_Matrix_W, V, k, row, col); // WT*V
 
-    double *Temp_matrix[N];// Temo_Matrix for storing WT*W in 
+    double *Temp_matrix[N]; // Temo_Matrix for storing WT*W in
     double *denominator[N];
 
     for (int i = 0; i < k; i++)
@@ -34,7 +34,7 @@ void update_Matrix_H(double **W, double **H, double **V, int row, int k, int col
 
     multiply(Temp_matrix, transpose_Matrix_W, W, k, row, k); // WT*W
     multiply(denominator, Temp_matrix, H, k, k, col);        //(WT*W)*H
-    double *updated_H[N];                                  // the term that is to be multiplied with H
+    double *updated_H[N];                                    // the term that is to be multiplied with H
 
     for (int i = 0; i < k; i++)
         updated_H[i] = (double *)malloc(col * sizeof(double));
@@ -56,51 +56,60 @@ void update_Matrix_H(double **W, double **H, double **V, int row, int k, int col
 }
 void update_Matrix_W(double **W, double **H, double **V, int row, int k, int col)
 {
-    double *HT[N], *numerator[N];
+    double *transpose_H[N], *numerator[N];
 
     for (int i = 0; i < col; i++)
-        HT[i] = (double *)malloc(k * sizeof(double));
+    {
+        transpose_H[i] = (double *)malloc(k * sizeof(double));
+    }
 
-    transpose(H, HT, k, col); // HT
+    transpose(H, transpose_H, k, col);
 
     for (int i = 0; i < row; i++)
+    {
         numerator[i] = (double *)malloc(k * sizeof(double));
+    }
 
-    multiply(numerator, V, HT, row, col, k); // V*HT
+    multiply(numerator, V, transpose_H, row, col, k);
 
     double *HHT[N];
 
     for (int i = 0; i < k; i++)
         HHT[i] = (double *)malloc(k * sizeof(double));
 
-    multiply(HHT, H, HT, k, col, k); // HT*H
+    multiply(HHT, H, transpose_H, k, col, k);
 
-    double *denominator[N];
+    double *denominator_Matrix[N];
     for (int i = 0; i < row; i++)
-        denominator[i] = (double *)malloc(k * sizeof(double));
+    {
+        denominator_Matrix[i] = (double *)malloc(k * sizeof(double));
+    }
 
-    multiply(denominator, W, HHT, row, k, k);
+    multiply(denominator_Matrix, W, HHT, row, k, k);
 
-    double *updated_W[N];
+    double *changes_W_Matrix[N];
 
     for (int i = 0; i < row; i++)
-        updated_W[i] = (double *)malloc(k * sizeof(double));
+    {
+        changes_W_Matrix[i] = (double *)malloc(k * sizeof(double));
+    }
 
-    divide_each_element(updated_W, numerator, denominator, row, k);
+    divide_each_element(changes_W_Matrix, numerator, denominator_Matrix, row, k);
 
     double *ans_W[N];
 
     for (int i = 0; i < row; i++)
+    {
         ans_W[i] = (double *)malloc(k * sizeof(double));
+    }
 
-    multiply_each_element(ans_W, W, updated_W, row, k);
-
+    multiply_each_element(ans_W, W, changes_W_Matrix, row, k);
     copy_matrix(ans_W, W, row, k);
     Delete_Matrix(ans_W, row);
-    Delete_Matrix(updated_W, row);
-    Delete_Matrix(denominator, row);
+    Delete_Matrix(changes_W_Matrix, row);
+    Delete_Matrix(denominator_Matrix, row);
     Delete_Matrix(HHT, k);
-    Delete_Matrix(HT, col);
+    Delete_Matrix(transpose_H, col);
     Delete_Matrix(numerator, row);
 }
 
@@ -174,14 +183,14 @@ void gradientDescent()
     multiply(V, W, H, row, k, col);
 
     printf("V = \n");
-    int counter = 1;
+    int iteration = 0;
     double cost = cost_calculate(matrix, V, row, col);
     double initial_cost = cost;
     double prev_cost = 0;
     printf("Updating costs: \n");
     while (cost > EPSILON)
     {
-        if ((counter % 2) != 0)
+        if ((iteration % 2) == 0)
         {
             update_Matrix_H(W, H, matrix, row, k, col);
             cout << "New H" << endl;
@@ -191,7 +200,7 @@ void gradientDescent()
             update_Matrix_W(W, H, matrix, row, k, col);
             cout << "New W" << endl;
         }
-        counter++;
+        iteration++;
         multiply(V, W, H, row, k, col);
         cost = cost_calculate(matrix, V, row, col);
         if (fabs(prev_cost - cost) <= EPSILON)
@@ -208,7 +217,7 @@ void gradientDescent()
     freopen("result.txt", "w", stdout);
     printf("The beginning cost was: %lf\n", initial_cost);
     printf("The final cost was: %lf\n", cost);
-    printf("Total number of iterations before arriving at result: %d\n", counter);
+    printf("Total number of iterations before arriving at result: %d\n", iteration);
     printf("The broken down matrix:\n ");
     print_two_matrix(W, H, row, k, col);
 }
