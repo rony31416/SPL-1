@@ -60,8 +60,7 @@ void TF(double **TF_Matrix, string *tokenizedWords, vector<pair<int, pair<string
             tf_matrix[i][j - 1] = repValue / number_of_word_in_sentence;
         }
     }
-    cout << "okk\n";
-
+  //  cout << "okk\n";
     for (i = 0; i < n; i++)
     {
         for (j = 0; j < totalSentence; j++)

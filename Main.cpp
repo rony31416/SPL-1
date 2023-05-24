@@ -29,6 +29,47 @@ int main()
     cout << rootWord << endl
          << endl;
 
+    // TF start
+    double *TF_Matrix[N];
+    int num_sentence = total_word_in_sentence.size();
+    cout << "sentence :" << num_sentence << "\n";
+    for (int i = 0; i < rootWord; i++)
+    {
+        TF_Matrix[i] = (double *)malloc(num_sentence * sizeof(double));
+    }
+
+    TF(TF_Matrix, tokenizedWords, freq_in_sentence, total_word_in_sentence, countElements(tokenizedWords), num_sentence);
+    // print_matrix(TF_Matrix, rootWord, num_sentence);
+
+    // IDF start
+    double *IDF_Matrix[N];
+    for (int i = 0; i < rootWord; i++)
+    {
+        IDF_Matrix[i] = (double *)malloc((int)1 * sizeof(double));
+    }
+    IDF(IDF_Matrix, freq_in_sentence, num_sentence_contain_word, num_sentence, countElements(tokenizedWords));
+    // print_matrix(IDF_Matrix,rootWord,1);
+
+    // TF_IDF calculate
+    double *Trans_TF_IDF[N];
+    for (int i = 0; i < num_sentence; i++)
+    {
+        Trans_TF_IDF[i] = (double *)malloc(rootWord * sizeof(double));
+    }
+
+    transpose_matrix(TF_Matrix, Trans_TF_IDF, num_sentence, rootWord);
+    // print_matrix(Trans_TF_IDF, num_sentence, rootWord);
+
+    cout << "\n\nTFIDF\n";
+
+    double *TF_IDF[N];
+    for (int i = 0; i < num_sentence; i++)
+    {
+        TF_IDF[i] = (double *)malloc(rootWord * sizeof(double));
+    }
+    TFIDF(TF_IDF, Trans_TF_IDF, IDF_Matrix, num_sentence, rootWord);
+    // print_matrix(TF_IDF, num_sentence, rootWord);
+
     int choice;
     while (true)
     {
@@ -48,66 +89,30 @@ int main()
             }
             cout << "\n";
         }
-        else if(choice == 2) 
+        else if (choice == 2)
         {
-
+            printf("TF matrix : \n");
+            print_matrix(TF_Matrix, rootWord, num_sentence);
+        }
+        else if (choice == 3)
+        {
+            printf("IDF matrix\n");
+            print_matrix(IDF_Matrix, rootWord, 1);
+        }
+        else if (choice == 4)
+        {
+            printf("TF-IDF matrix\n");
+            print_matrix(TF_IDF, num_sentence, rootWord);
+        }
+        else if (choice == 5)
+        {
+            break;
+        }
+        else
+        {
+            cout << "Invalid choice. Please try again." << endl;
         }
     }
-
-    // print(tokenizedWords);
-
-    /*        for (const auto &element : freq_in_sentence)
-        {
-            int firstValue = element.first;
-            string secondFirstValue = element.second.first;
-            int secondSecondValue = element.second.second;
-            cout << "First: " << firstValue << ", Second First: " << secondFirstValue << ", Second Second: " << secondSecondValue << endl;
-           // freq_in_sentence.insert(firstValue);
-        }
-    */
-    // gradientDescent();
-
-    // TF start
-    double *TF_Matrix[N];
-    int num_sentence = total_word_in_sentence.size();
-    cout << "sentence :" << num_sentence << "\n";
-    for (int i = 0; i < rootWord; i++)
-    {
-        TF_Matrix[i] = (double *)malloc(num_sentence * sizeof(double));
-    }
-
-    TF(TF_Matrix, tokenizedWords, freq_in_sentence, total_word_in_sentence, countElements(tokenizedWords), num_sentence);
-    print_matrix(TF_Matrix, rootWord, num_sentence);
-
-    // IDF start
-    double *IDF_Matrix[N];
-    for (int i = 0; i < rootWord; i++)
-    {
-        IDF_Matrix[i] = (double *)malloc((int)1 * sizeof(double));
-    }
-    IDF(IDF_Matrix, freq_in_sentence, num_sentence_contain_word, num_sentence, countElements(tokenizedWords));
-    // print_matrix(IDF_Matrix,rootWord,1);
-
-
-    //TF_IDF calculate
-    double *Trans_TF_IDF[N];
-    for (int i = 0; i < num_sentence; i++)
-    {
-        Trans_TF_IDF[i] = (double *)malloc(rootWord * sizeof(double));
-    }
-
-    transpose_matrix(TF_Matrix, Trans_TF_IDF, num_sentence, rootWord);
-    print_matrix(Trans_TF_IDF, num_sentence, rootWord);
-
-    cout << "\n\nTFIDF\n";
-
-    double *TF_IDF[N];
-    for (int i = 0; i < num_sentence; i++)
-    {
-        TF_IDF[i] = (double *)malloc(rootWord * sizeof(double));
-    }
-    TFIDF(TF_IDF, Trans_TF_IDF, IDF_Matrix, num_sentence, rootWord);
-    print_matrix(TF_IDF, num_sentence, rootWord);
 
     return 0;
 }
