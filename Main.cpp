@@ -114,5 +114,24 @@ int main()
         }
     }
 
+    int k;
+    cout << "dimention : ";
+    cin >> k;
+
+    double *W_Mat[N], *H_Mat[N];
+    int i,j;
+    for (i = 0; i < num_sentence; i++)
+    {
+        W_Mat[i] = (double *)malloc(k * sizeof(double));
+    }
+    for (i = 0; i < k; i++)
+    {
+        H_Mat[i] = (double *)malloc(rootWord * sizeof(double));
+    }
+
+    gradientDescent(TF_IDF,W_Mat,H_Mat, num_sentence, rootWord, k);
+    fclose(stdout);
+
+    
     return 0;
 }

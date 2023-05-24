@@ -5,7 +5,11 @@
 #include <math.h>
 using namespace std;
 #define STANDARD_EPSILON 2.220446049250E-16
-#define EPSILON 1e-4
+#define EPSILON 2e-4
+#define e 2.71828
+const double sig = 5.0;
+const double Mu = 10.0;
+
 const int N1 = 10000;
 
 double power(double a, int n)
@@ -26,6 +30,39 @@ double power(double a, int n)
     }
     return res;
 }
+
+void Normalization(double **matrix, int row, int col)
+{
+    double avg, sd, var = 0.0, sum = 0.0;
+
+    for (int i = 0; i < row; i++)
+    {
+        for (int j = 0; j < col; j++)
+        {
+            sum += matrix[i][j];
+        }
+    }
+    avg = sum / (row * col);
+
+    for (int i = 0; i < row; i++)
+    {
+        for (int j = 0; j < col; j++)
+        {
+            var += power((matrix[i][j] - avg), 2);
+        }
+    }
+    var = var / ((row * col) - 1);
+    sd = sqrt(var);
+
+    for (int i = 0; i < row; i++)
+    {
+        for (int j = 0; j < col; j++)
+        {
+            matrix[i][j] = matrix[i][j] / sd;
+        }
+    }
+}
+
 
 double Determinant(double **matrix, int row, int column)
 {
@@ -94,9 +131,6 @@ double cost_calculate(double **initial_matrix, double **current_matrix, int row,
         }
     }
     total_cost = sqrt(total);
-
-    cout << "Cost is :" << total_cost << endl;
-
     return total_cost;
 }
 
@@ -168,16 +202,33 @@ void Delete_Matrix(double **matrix, int row)
     }
 }
 
+double Random_generator(double minValue, double maxValue)
+{
+    double range = (maxValue - minValue);
+    double div = (double)RAND_MAX / range; // 32767 is the max value of rand()
+    return minValue + ((double)rand() / div);
+}
+
+double Exponential_Find() // e^(-0.5*x^2)
+{
+    double Power, x;
+    x = Random_generator(-8.0, 10.0);       // random number generator within -10.0 to 10.0
+    Power = ((x - sig) / Mu); // x-sigma/Mu is the power
+    double half = -0.5;
+    Power = pow((half * Power), 2.0); // e^-0.5*power^2
+    return pow(e, Power);
+}
+
 double Make_random_number()
 {
-    srand(time(NULL));
+    /*srand(time(NULL));
 
     double random_number = rand() / (double)RAND_MAX;
 
     if (random_number < 0)
     {
         random_number = random_number * (-1);
-    }
-    return random_number;
+    }*/
+      return (0.398922804 / sig) * Exponential_Find();
 }
 #endif

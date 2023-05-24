@@ -34,7 +34,7 @@ void update_Matrix_H(double **W, double **H, double **V, int row, int k, int col
 
     multiply(Temp_matrix, transpose_Matrix_W, W, k, row, k); // WT*W
     multiply(denominator, Temp_matrix, H, k, k, col);        //(WT*W)*H
-    double *updated_H[N1];                                    // the term that is to be multiplied with H
+    double *updated_H[N1];                                   // the term that is to be multiplied with H
 
     for (int i = 0; i < k; i++)
         updated_H[i] = (double *)malloc(col * sizeof(double));
@@ -115,33 +115,26 @@ void update_Matrix_W(double **W, double **H, double **V, int row, int k, int col
 
 // gradientDescent function without parameter
 
-void gradientDescent()
+void gradientDescent(double **TFIDF, double **W_Mat, double **H_Mat, int row, int col, int k)
 {
+    //print_matrix(TFIDF,row,col);
     double *matrix[N1];
-    int col, row, i, j, k;
-
-    printf("Enter the number of row and column : ");
-    scanf("%d%d", &row, &col);
+    int i, j;
 
     for (i = 0; i < row; i++)
     {
         matrix[i] = (double *)malloc(col * sizeof(double));
     }
 
-    printf("Enter Matrix :");
-
     for (i = 0; i < row; i++)
     {
         for (j = 0; j < col; j++)
         {
-            cin >> matrix[i][j];
+            matrix[i][j] = TFIDF[i][j];
         }
     }
+    Normalization(matrix, row, col);
     print_matrix(matrix, row, col);
-    printf("Enter dimension: ");
-    scanf("%d", &k);
-
-    printf("Matrix broken and initialized using Gaussian dist: ");
     double *W[N1], *H[N1];
 
     for (i = 0; i < row; i++)
@@ -171,10 +164,6 @@ void gradientDescent()
         }
     }
 
-    printf("Print broken down matrices:\n");
-
-    print_two_matrix(W, H, row, k, col);
-
     double *V[N1]; // V[N] matrix for storing W*H
     for (i = 0; i < row; i++)
     {
@@ -182,8 +171,7 @@ void gradientDescent()
     }
     multiply(V, W, H, row, k, col);
 
-    printf("V = \n");
-    int iteration = 0;
+    int iteration = 1;
     double cost = cost_calculate(matrix, V, row, col);
     double initial_cost = cost;
     double prev_cost = 0;
@@ -193,19 +181,19 @@ void gradientDescent()
         if ((iteration % 2) == 0)
         {
             update_Matrix_H(W, H, matrix, row, k, col);
-            cout << "New H" << endl;
         }
         else
         {
             update_Matrix_W(W, H, matrix, row, k, col);
-            cout << "New W" << endl;
         }
         iteration++;
         multiply(V, W, H, row, k, col);
         cost = cost_calculate(matrix, V, row, col);
+        cout << "cost : " << cost << "\t"
+             << "at iteration : " << iteration << "\n";
         if (fabs(prev_cost - cost) <= EPSILON)
         {
-            printf("Reached relative minima\n");
+            printf("Find relative minima\n");
             break;
         }
         else
@@ -213,16 +201,54 @@ void gradientDescent()
             prev_cost = cost;
         }
     }
-    printf("Factorization done!");
-    freopen("result.txt", "w", stdout);
+
+    print_two_matrix(W, H, row, k, col);
+    copy_matrix(W, W_Mat, row, k);
+    copy_matrix(H, H_Mat, k, col);
+
+    int choice2;
+    while (true)
+    {
+        cout << "Enter your choice to print :\n";
+        cout << "1.W Matrix\n";
+        cout << "2.H Matrix\n";
+        cout<<  "3.W*H Matrix\n";
+        cout << "4.Exit\n";
+        cin >> choice2;
+        if (choice2 == 1)
+        {
+            printf("W Matrix\n");
+            print_matrix(W_Mat, row, k);
+        }
+        else if (choice2 == 2)
+        {
+            printf("H Matrix\n");
+            print_matrix(H_Mat, k, col);
+        }
+        else if (choice2 = 3)
+        {
+            printf("TF-IDF\n");
+            print_matrix(TFIDF,row,col);
+            printf("W*H Matrix\n");
+            multiply(TFIDF,W_Mat,H_Mat,row,k,col);
+            print_matrix(TFIDF,row,col);
+        }
+        else
+        {
+            cout << "Invalid choice. Please try again." << endl;
+        }
+    }
+
+    freopen("result_nmf.txt", "w", stdout);
     printf("The beginning cost was: %lf\n", initial_cost);
     printf("The final cost was: %lf\n", cost);
     printf("Total number of iterations before arriving at result: %d\n", iteration);
     printf("The broken down matrix:\n ");
     print_two_matrix(W, H, row, k, col);
+    fclose(stdout);
 }
 
-void gradientDescent(double **matrix, double **A, double **B, int row, int k, int col)
+void gradientDescentMethod(double **matrix, double **A, double **B, int row, int k, int col)
 {
     int i, j;
     for (i = 0; i < row; i++)

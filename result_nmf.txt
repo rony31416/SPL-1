@@ -1,0 +1,5 @@
+The beginning cost was: 9.277085
+The final cost was: -nan
+Total number of iterations before arriving at result: 5
+The broken down matrix:
+ 

@@ -41,7 +41,7 @@ void print_matrix(double **V, int m, int n)
         }
         printf("\n");
     }
-    cout << endl;
+   
 }
 
 void greetings()
