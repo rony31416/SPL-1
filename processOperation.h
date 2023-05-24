@@ -53,12 +53,11 @@ void openFile(ifstream &FILE, string fileName)
 void processFile_wordByword(ifstream &FILE)
 {
     string line,word;
-    vector<string> store;
     map<string,int> temp;//word,freq;
 
     istringstream iss;
     int i = 0;
-    int cnt = 0,numOfcount;
+    int cnt = 0,numOfcount = 0;
     while(!FILE.eof())
     {
         getline(FILE,line);
@@ -71,9 +70,9 @@ void processFile_wordByword(ifstream &FILE)
             {
                 iss>>word;
                 words[i] = word;
-                store.push_back(word);
                 frequency[word]++;
                 temp[word]++;
+                numOfcount++;
                 i++;
             }
             cnt++;
@@ -87,12 +86,12 @@ void processFile_wordByword(ifstream &FILE)
             ++it;
         }
         temp.clear();
-        numOfcount = store.size();
         if(numOfcount != 0 )
         {
             total_word_in_sentence[cnt] = numOfcount;
         }
-        store.clear();
+        numOfcount = 0;
+        
     }
 }
 
@@ -234,4 +233,3 @@ void stopWordRemove()
 
 
 #endif
-
