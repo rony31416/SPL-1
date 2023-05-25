@@ -160,6 +160,23 @@ void copy_matrix(double **sourceMatrix, double **destinationMatrix, int rows, in
     }
 }
 
+bool is_same_matrix(double **sourceMatrix, double **destinationMatrix, int rows, int columns)
+{
+     bool ok = true;
+    for (int i = 0; i < rows; i++)
+    {
+        for (int j = 0; j < columns; j++)
+        {
+            if(destinationMatrix[i][j] != sourceMatrix[i][j])
+            {
+                ok = false;
+                return ok;
+            }
+        }
+    }
+    return ok;
+}
+
 void transpose(double **inputMatrix, double **transposeMatrix, int rows, int columns)
 {
     for (int i = 0; i < rows; i++)

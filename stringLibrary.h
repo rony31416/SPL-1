@@ -1,7 +1,7 @@
 #ifndef STRINGOPERATIONS_H
 #define STRINGOPERATIONS_H
-#include<iostream>
-#include<algorithm>
+#include <iostream>
+#include <algorithm>
 
 using namespace std;
 
@@ -26,9 +26,42 @@ int countElements(string str[])
     }
     return count;
 }
+char **tokenizer_(char *str,int MAX_WORD_IN_A_SENTENCE,int MAX_WORD)
+{
+    char **List_words = (char **)calloc(MAX_WORD_IN_A_SENTENCE, sizeof(char));
+
+    List_words[0] = (char *)calloc(MAX_WORD, sizeof(char));
+    List_words[1] = (char *)calloc(MAX_WORD, sizeof(char));
+
+    int str_index = 0, word_index = 0, word_list_index = 1;
+    while (str[str_index] != '\0')
+    {
+        if (str[str_index] == ' ')
+        {
+            List_words[word_list_index][word_index] = '\0';
+            ;
+            word_list_index++;
+            word_index = 0;
+
+            List_words[word_list_index] = (char *)calloc(MAX_WORD, sizeof(char));
+        }
+        else
+        {
+            List_words[word_list_index][word_index] = str[str_index];
+            word_index++;
+        }
+        str_index++;
+    }
+
+    List_words[word_list_index][word_index] = '\0';
+    word_list_index++;
+
+    List_words[word_list_index] = NULL;
+    return List_words;
+}
 //---------------------------------------------------------------
-//Rabin-Karp Algorithm for Pattern Searching
-int stringPatternSearch(string text,string pattern)
+// Rabin-Karp Algorithm for Pattern Searching
+int stringPatternSearch(string text, string pattern)
 {
 
     const int BASE = 256;
@@ -51,13 +84,13 @@ int stringPatternSearch(string text,string pattern)
 
     // power = BASE^(|pattern|-1)
     long long power = 1;
-    for (int i = 0; i < (int) pattern.size() - 1; ++i)
+    for (int i = 0; i < (int)pattern.size() - 1; ++i)
     {
         power = power * BASE % MOD;
     }
 
     // text er surur 3 size window ase
-    for (int i = 0, j = (int) pattern.size() - 1; j < text.size(); ++i, ++j)
+    for (int i = 0, j = (int)pattern.size() - 1; j < text.size(); ++i, ++j)
     {
         if (text_window_hash == pattern_hash)
         {
@@ -68,7 +101,8 @@ int stringPatternSearch(string text,string pattern)
         int out_char = text[i] - 'a' + 1;
         // here power = BASE^(|pattern|-1)
         text_window_hash = (text_window_hash - out_char * power) % MOD;
-        if (text_window_hash < 0) text_window_hash += MOD;
+        if (text_window_hash < 0)
+            text_window_hash += MOD;
 
         text_window_hash = text_window_hash * BASE % MOD;
 
@@ -82,18 +116,18 @@ int stringPatternSearch(string text,string pattern)
     return -1;
 }
 //-----------------------------------------------------------
-//KMP Algorithm for Pattern Searching
-int* computeLPS(string pattern)
+// KMP Algorithm for Pattern Searching
+int *computeLPS(string pattern)
 {
     int patternLength = pattern.size();
-    int* lps = new int[patternLength];
+    int *lps = new int[patternLength];
     lps[0] = 0;
     int k = 0;
     for (int i = 1; i < patternLength; i++)
     {
         while (k > 0 && pattern[k] != pattern[i])
         {
-            k = lps[k-1];
+            k = lps[k - 1];
         }
         if (pattern[k] == pattern[i])
         {
@@ -107,7 +141,7 @@ int* computeLPS(string pattern)
 int stringFind(string text, string pattern)
 {
     int position = -1;
-    int* lps = computeLPS(pattern);
+    int *lps = computeLPS(pattern);
     int matchedIndex = 0;
     for (int currentIndex = 0; currentIndex < text.length(); currentIndex++)
     {
@@ -119,7 +153,7 @@ int stringFind(string text, string pattern)
         {
             matchedIndex++;
         }
-        if (matchedIndex == len(pattern) )
+        if (matchedIndex == len(pattern))
         {
             position = currentIndex - (len(pattern) - 1);
             matchedIndex = lps[matchedIndex - 1];
@@ -129,7 +163,7 @@ int stringFind(string text, string pattern)
 }
 //---------------------------------------------------------------
 
-string get_substring(const string& str, int start, int end)
+string get_substring(const string &str, int start, int end)
 {
     string result;
     for (int i = start; i < end; ++i)
@@ -139,25 +173,22 @@ string get_substring(const string& str, int start, int end)
     return result;
 }
 
-
-
 string replaceFirstOccurrence(string inputString, string target, string replacement)
 {
     string result = "";
     int targetIndex = stringFind(inputString, target);
-    for(int i = 0; i < targetIndex; i++)
+    for (int i = 0; i < targetIndex; i++)
         result += inputString[i];
 
     int remainingChars = 1 + inputString.length() - result.length() - target.length();
 
-    for(int i = 0; i < replacement.length(); i++)
+    for (int i = 0; i < replacement.length(); i++)
         result += replacement[i];
 
-    for(int i = inputString.length() - remainingChars; i < inputString.length(); i++)
+    for (int i = inputString.length() - remainingChars; i < inputString.length(); i++)
         result += inputString[i];
 
     return result;
 }
 
 #endif
-

@@ -230,6 +230,7 @@ void gradientDescent(double **TFIDF, double **W_Mat, double **H_Mat, int row, in
             printf("TF-IDF\n");
             print_matrix(TFIDF,row,col);
             printf("W*H Matrix\n");
+            printf("sentence X feature --->>\n");
             multiply(TFIDF,W_Mat,H_Mat,row,k,col);
             print_matrix(TFIDF,row,col);
         }
