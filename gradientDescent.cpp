@@ -115,7 +115,7 @@ void update_Matrix_W(double **W, double **H, double **V, int row, int k, int col
 
 // gradientDescent function without parameter
 
-void gradientDescent(double **TFIDF, double **W_Mat, double **H_Mat, int row, int col, int k)
+void gradientDescent(double **TFIDF, double **W_Mat, double **H_Mat, int row, int col, int k,string *tokenizedWords)
 {
     //print_matrix(TFIDF,row,col);
     double *matrix[N1];
@@ -212,8 +212,9 @@ void gradientDescent(double **TFIDF, double **W_Mat, double **H_Mat, int row, in
         cout << "Enter your choice to print :\n";
         cout << "1.W Matrix\n";
         cout << "2.H Matrix\n";
-        cout<<  "3.W*H Matrix\n";
-        cout << "4.Exit\n";
+        cout << "3.W*H Matrix\n";
+        cout << "4.show Priority\n";
+        cout << "5.Exit\n";
         cin >> choice2;
         if (choice2 == 1)
         {
@@ -234,10 +235,25 @@ void gradientDescent(double **TFIDF, double **W_Mat, double **H_Mat, int row, in
             multiply(TFIDF,W_Mat,H_Mat,row,k,col);
             print_matrix(TFIDF,row,col);
         }
-        else if(choice2 == 4) 
+        else if(choice2 == 5) 
         {
             cout<<"\t\t\tThank You!\n\n";
             break;
+        }
+        else if(choice2 == 4) 
+        {
+            cout<<"word priorities :\n";
+            int cnt = 1;
+            for(int i = 0 ; i < row ; i++) 
+            {
+                cout<<"Topic "<<cnt<<"\n";
+                cnt++;
+                for(int j = 0 ; j < col ; j++) 
+                {
+                    cout<<tokenizedWords[j]<<" {"<<TFIDF[i][j]<<"}"<<"  ";
+                }
+                cout<<"\n";
+            }
         }
         else
         {

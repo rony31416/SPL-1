@@ -131,7 +131,7 @@ int main()
         H_Mat[i] = (double *)malloc(rootWord * sizeof(double));
     }
 
-    gradientDescent(TF_IDF,W_Mat,H_Mat, num_sentence, rootWord, k);
+    gradientDescent(TF_IDF,W_Mat,H_Mat, num_sentence, rootWord, k,tokenizedWords);
     fclose(stdout);
 
     
