@@ -98,10 +98,10 @@ void processFile_wordByword(ifstream &FILE)
     }
 }
 
-void storeText()
+void storeText(string FileName)
 {
     ifstream FILE;
-    openFile(FILE,"input.txt");
+    openFile(FILE,FileName);
     processFile_wordByword(FILE);
 
     FILE.close();

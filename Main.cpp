@@ -15,8 +15,10 @@ int main()
 {
 
     greetings();
-
-    storeText();
+    cout<<"Enter file name: \n";
+    string fileName;
+    cin>>fileName;
+    storeText(fileName);
     storeSuffix();
 
     Tokenization();
@@ -115,7 +117,7 @@ int main()
     }
 
     int k;
-    cout << "dimention : ";
+    cout << "dimention for factorized TFIDF Matrix: ";
     cin >> k;
 
     double *W_Mat[N], *H_Mat[N];

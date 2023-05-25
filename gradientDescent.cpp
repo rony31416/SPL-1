@@ -34,7 +34,7 @@ void update_Matrix_H(double **W, double **H, double **V, int row, int k, int col
 
     multiply(Temp_matrix, transpose_Matrix_W, W, k, row, k); // WT*W
     multiply(denominator, Temp_matrix, H, k, k, col);        //(WT*W)*H
-    double *updated_H[N1];                                   // the term that is to be multiplied with H
+    double *updated_H[N1];                                  
 
     for (int i = 0; i < k; i++)
         updated_H[i] = (double *)malloc(col * sizeof(double));
@@ -225,7 +225,7 @@ void gradientDescent(double **TFIDF, double **W_Mat, double **H_Mat, int row, in
             printf("H Matrix\n");
             print_matrix(H_Mat, k, col);
         }
-        else if (choice2 = 3)
+        else if (choice2 == 3)
         {
             printf("TF-IDF\n");
             print_matrix(TFIDF,row,col);
@@ -233,6 +233,11 @@ void gradientDescent(double **TFIDF, double **W_Mat, double **H_Mat, int row, in
             printf("sentence X feature --->>\n");
             multiply(TFIDF,W_Mat,H_Mat,row,k,col);
             print_matrix(TFIDF,row,col);
+        }
+        else if(choice2 == 4) 
+        {
+            cout<<"\t\t\tThank You!\n\n";
+            break;
         }
         else
         {

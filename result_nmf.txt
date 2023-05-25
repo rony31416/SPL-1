@@ -2,4 +2,9 @@ The beginning cost was: 9.277085
 The final cost was: -nan
 Total number of iterations before arriving at result: 5
 The broken down matrix:
- 
+ First matrix=
+12.434710	
+7.290305	
+Second matrix=
+0.121863	-nan	-nan	0.121863	0.121863	0.121863	-nan	0.188845	0.188845	0.121863	0.121863	0.121863	0.121863	0.121863	0.066981	-nan	0.066981	0.066981	-nan	-nan	0.066981	0.188845	0.188845	0.066981	
+
